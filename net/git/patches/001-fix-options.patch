@@ -1,0 +1,11 @@
+Index: git-1.6.5.6/parse-options.h
+===================================================================
+--- git-1.6.5.6.orig/parse-options.h	2010-03-07 22:08:36.218744174 +0800
++++ git-1.6.5.6/parse-options.h	2010-03-07 22:08:55.921244698 +0800
+@@ -1,5 +1,6 @@
+ #ifndef PARSE_OPTIONS_H
+ #define PARSE_OPTIONS_H
++#define option optionx
+ 
+ enum parse_opt_type {
+ 	/* special types */

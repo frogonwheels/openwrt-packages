@@ -1,0 +1,12 @@
+Index: miniupnpd-1.4/miniupnpd.c
+===================================================================
+--- miniupnpd-1.4.orig/miniupnpd.c	2010-03-07 21:54:27.188743435 +0800
++++ miniupnpd-1.4/miniupnpd.c	2010-03-07 21:55:45.859212162 +0800
+@@ -40,6 +40,7 @@
+ #include "miniupnpdpath.h"
+ #include "getifaddr.h"
+ #include "upnpsoap.h"
++#define option optionn
+ #include "options.h"
+ #include "minissdp.h"
+ #include "upnpredirect.h"

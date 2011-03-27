@@ -1,0 +1,13 @@
+Index: lzo-2.03/lzotest/mygetopt.ch
+===================================================================
+--- lzo-2.03.orig/lzotest/mygetopt.ch	2010-03-07 22:42:53.835503733 +0800
++++ lzo-2.03/lzotest/mygetopt.ch	2010-03-07 22:50:16.703004006 +0800
+@@ -26,6 +26,8 @@
+ #include <string.h>
+ #endif
+ 
++#define _getopt_internal _getopt_lzo_internal
++
+ 
+ #undef PROGNAME
+ #define PROGNAME(x)     (x)

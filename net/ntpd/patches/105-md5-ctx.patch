@@ -1,0 +1,12 @@
+Index: ntp-4.2.4p7/include/ntp_md5.h
+===================================================================
+--- ntp-4.2.4p7.orig/include/ntp_md5.h	2009-08-12 13:18:56.876976223 +0800
++++ ntp-4.2.4p7/include/ntp_md5.h	2009-08-12 13:20:08.137450190 +0800
+@@ -4,6 +4,7 @@
+ 
+ #ifdef HAVE_MD5_H
+ # include <md5.h>
++typedef struct md5_ctx MD5_CTX;
+ #else
+ # include "rsa_md5.h"
+ #endif
