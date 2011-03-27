@@ -42,6 +42,7 @@ define Build/Configure
 		--disable-gtk-peer \
 		--disable-gconf-peer \
 		--disable-plugin \
+		--disable-Werror
 	)
 endef
 
