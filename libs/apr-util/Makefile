@@ -4,6 +4,7 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# $Id: Makefile 12228 2008-08-06 22:43:15Z nbd $ 
 
 include $(TOPDIR)/rules.mk
 
@@ -45,16 +46,24 @@ CONFIGURE_VARS += \
 	ac_cv_path_ODBC_CONFIG= \
 	APR_BUILD_DIR="$(STAGING_DIR)/usr/share/build-1" \
 
+define Build/Compile
+	$(MAKE) -C $(PKG_BUILD_DIR) APRUTIL_LIBS="-lsqlite3 -L$(STAGING_DIR)/usr/lib -lexpat -liconv -lapr -luuid -lm -lcrypt" all
+	$(MAKE) -C $(PKG_BUILD_DIR) DESTDIR="$(PKG_INSTALL_DIR)" install
+endef
+
 MAKE_FLAGS += \
 	APRUTIL_LIBS="-lsqlite3 $(TARGET_LDFLAGS) -lexpat $(if $(ICONV_FULL),-liconv) -lapr-1 -luuid -lm -lcrypt" \
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/include/apr-1/ $(1)/usr/lib  $(1)/usr/lib/pkgconfig/
 	$(CP)   $(PKG_INSTALL_DIR)/usr/bin/apu-1-config \
-	 	$(1)/usr/bin/
+	        $(1)/usr/bin
 	$(CP)   $(PKG_INSTALL_DIR)/usr/include/apr-1/* \
 		$(1)/usr/include/apr-1/
-	$(CP)   $(PKG_INSTALL_DIR)/usr/lib/libaprutil-1.{la,a,so*} \
+	$(CP)   $(PKG_INSTALL_DIR)/usr/lib/libaprutil-1.{la,so*} \
+		$(1)/usr/lib/
+	[ ! -e $(PKG_INSTALL_DIR)/usr/lib/libaprutil-1.a ] \
+	|| $(CP)   $(PKG_INSTALL_DIR)/usr/lib/libaprutil-1.a \
 		$(1)/usr/lib/
 	$(CP)   $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/apr-util-1.pc \
 		$(1)/usr/lib/pkgconfig/
