@@ -15,11 +15,18 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://www.php.net/distributions/
 PKG_MD5SUM:=704cd414a0565d905e1074ffdc1fadfb
 
+CONFIGURE_VARS += \
+  	pthreads_working=yes\
+	LDFLAGS="$$$$LDFLAGS -lpthread" \
+	ac_cv_pthreads_lib=pthread
+
+
 PKG_FIXUP:=libtool no-autoreconf
 PKG_BUILD_PARALLEL:=1
 
 PHP5_MODULES = \
 	apc \
+        apache \
 	ctype curl \
 	fileinfo \
 	dio dom \
@@ -124,6 +131,18 @@ define Package/php5-fastcgi/description
   on the php5-cgi package, containing just the startup script.
 endef
 
+define Package/php5-apache
+  $(call Package/php5/Default)
+  DEPENDS+= +apache-server +libpthread
+  TITLE+= (Apache)
+endef
+
+define Package/php5-apache/description
+$(call Package/php5/Default/description)
+ This package contains the Apache module version of the PHP5 interpreter.
+endef
+
+
 CONFIGURE_ARGS+= \
 	--enable-shared \
 	--disable-static \
@@ -151,6 +170,10 @@ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-cgi),)
   CONFIGURE_ARGS+= --enable-cgi
 else
   CONFIGURE_ARGS+= --disable-cgi
+endif
+
+ifneq ($(SDK)$(CONFIG_PACKAGE_php5-apache),)
+  CONFIGURE_ARGS+= --with-apxs2=$(STAGING_DIR)/usr/sbin/apxs \
 endif
 
 ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-apc),)
@@ -417,6 +440,11 @@ else
   CONFIGURE_ARGS+= --disable-filter
 endif
 
+ifneq ($(CONFIG_PACKAGE_php5-apache),)
+  PKG_BUILD_DEPENDS+= apache-server
+  PKG_CONFIGURE_LIBS+= -lpthread
+endif
+
 ifneq ($(SDK)$(CONFIG_PHP5_LIBXML),)
   CONFIGURE_ARGS+= --enable-libxml
   CONFIGURE_ARGS+= --with-libxml-dir="$(STAGING_DIR)/usr/include/libxml2"
@@ -462,6 +490,13 @@ define Package/php5-fastcgi/install
 	$(INSTALL_BIN) ./files/php.init $(1)/etc/init.d/php
 endef
 
+define Package/php5-apache/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP)	$(PKG_BUILD_DIR)/libs/libphp5.* \
+		$(1)/usr/lib 
+endef
+
+
 define BuildModule
 
   define Package/php5-mod-$(1)
@@ -489,6 +524,7 @@ $(eval $(call BuildPackage,php5))
 $(eval $(call BuildPackage,php5-cli))
 $(eval $(call BuildPackage,php5-cgi))
 $(eval $(call BuildPackage,php5-fastcgi))
+$(eval $(call BuildPackage,php5-apache))
 
 #$(eval $(call BuildModule,NAME,TITLE[,PKG DEPENDS]))
 $(eval $(call BuildModule,apc,APC,+PACKAGE_php5-mod-apc:librt))
