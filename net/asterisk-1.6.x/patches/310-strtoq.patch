@@ -1,0 +1,42 @@
+Index: asterisk-1.6.2.0-beta2/include/asterisk/compat.h
+===================================================================
+--- asterisk-1.6.2.0-beta2.orig/include/asterisk/compat.h	2009-08-17 10:42:35.591889186 +0800
++++ asterisk-1.6.2.0-beta2/include/asterisk/compat.h	2009-08-17 10:42:53.554041068 +0800
+@@ -102,7 +102,7 @@
+ #endif
+ 
+ #ifndef HAVE_STRTOQ
+-uint64_t strtoq(const char *nptr, char **endptr, int base);
++long long int strtoq(const char *nptr, char **endptr, int base);
+ #endif
+ 
+ #ifndef HAVE_UNSETENV
+Index: asterisk-1.6.2.0-beta2/main/strcompat.c
+===================================================================
+--- asterisk-1.6.2.0-beta2.orig/main/strcompat.c	2009-08-17 10:43:09.043886638 +0800
++++ asterisk-1.6.2.0-beta2/main/strcompat.c	2009-08-17 11:08:30.024605208 +0800
+@@ -213,12 +213,12 @@
+  * \note Ignores `locale' stuff.  Assumes that the upper and lower case
+  * alphabets and digits are each contiguous.
+  */
+-uint64_t strtoq(const char *nptr, char **endptr, int base)
++long long int strtoq(const char *nptr, char **endptr, int base)
+ {
+ 	 const char *s;
+-	 uint64_t acc;
++	 long long int acc;
+ 	 unsigned char c;
+-	 uint64_t qbase, cutoff;
++	 long long int qbase, cutoff;
+ 	 int neg, any, cutlim;
+ 
+ 	 /*
+@@ -266,7 +266,7 @@
+ 	  * overflow.
+ 	  */
+ 	 qbase = (unsigned)base;
+-	 cutoff = neg ? (uint64_t)-(LONG_MIN + LONG_MAX) + LONG_MAX : LONG_MAX;
++	 cutoff = neg ? (long long int)-(LONG_MIN + LONG_MAX) + LONG_MAX : LONG_MAX;
+ 	 cutlim = cutoff % qbase;
+ 	 cutoff /= qbase;
+ 	 for (acc = 0, any = 0;; c = *s++) {
