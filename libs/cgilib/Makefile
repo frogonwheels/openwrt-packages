@@ -28,13 +28,14 @@ define Package/cgilib
 endef
 
 TARGET_CFLAGS += $(FPIC)
+CONFIGURE_VARS += LIBTOOL=$(LIBTOOL)
 
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		$(TARGET_CONFIGURE_OPTS) \
                 OFLAGS="$(TARGET_CFLAGS)" \
 		DESTDIR="$(PKG_INSTALL_DIR)" \
-		LIBTOOL="$(LIBTOOL)" \
+		LIBTOOL=$(LIBTOOL) \
                 install
 endef
 

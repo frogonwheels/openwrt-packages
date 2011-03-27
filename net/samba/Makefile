@@ -52,6 +52,7 @@ define Package/samba2-client
 endef
 
 TARGET_CFLAGS += $(FPIC)
+TARGET_CPPFLAGS += $(FPIC)
 
 define Build/Compile	
 	rm -rf $(PKG_INSTALL_DIR)

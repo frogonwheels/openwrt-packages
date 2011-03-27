@@ -32,6 +32,10 @@ define Package/dovecot/description
  Dovecot is a program which provides POP3 and IMAP services.
 endef
 
+
+TARGET_CFLAGS += $(FPIC)
+
+
 CONFIGURE_ARGS += \
 	--without-gssapi \
 	--without-pam \
@@ -50,6 +54,7 @@ CONFIGURE_VARS += \
 	lib_cv_va_copy=yes \
 	lib_cv___va_copy=yes \
 	lib_cv_va_val_copy=yes \
+
 
 define Build/Configure
 	(cd $(PKG_BUILD_DIR); rm -rf config.{cache,status}; \

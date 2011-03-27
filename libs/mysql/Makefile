@@ -4,6 +4,7 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# $Id: Makefile 12228 2008-08-06 22:43:15Z nbd $
 
 include $(TOPDIR)/rules.mk
 
@@ -62,8 +63,8 @@ CONFIGURE_VARS += \
         CXXFLAGS="$$$$CXXFLAGS -fno-builtin -fno-rtti -nostdinc++"  \
         CPPFLAGS="$$$$CPPFLAGS -I$(STAGING_DIR)/usr/include/uClibc++" \
         LDFLAGS="$$$$LDFLAGS" \
-        LIBS="-nodefaultlibs -luClibc++ -lm $(LIBGCC_S)" \
-        CLIENTCLIBS="-nodefaultlibs -luClibc++ -lm $(LIBGCC_S)" \
+        LIBS="-luClibc++ -lm $(LIBGCC_S)" \
+        CLIENTCLIBS="-luClibc++ -lm $(LIBGCC_S)" \
 
 
 define Build/Configure

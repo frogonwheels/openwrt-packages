@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2008-2010 OpenWrt.org
+# Copyright (C) 2008-2009 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -24,8 +24,7 @@ define Package/fontconfig
   CATEGORY:=Xorg
   SUBMENU:=font-utils
   TITLE:=fontconfig
-  DEPENDS:=+libexpat +libfreetype
-  URL:=http://fontconfig.org/
+  DEPENDS:=+libX11 +libexpat +libfreetype
 endef
 
 CONFIGURE_ARGS+= \
@@ -36,13 +35,20 @@ CONFIGURE_ARGS+= \
 CONFIGURE_VARS+= \
 	ac_cv_prog_HASDOCBOOK=no \
 
-TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
-
 define Build/Compile
 	$(foreach dir,fc-arch fc-case fc-lang fc-glyphname, \
-		$(MAKE) -C $(PKG_BUILD_DIR)/$(dir) CFLAGS="$(HOST_CFLAGS)"  \
-			CPPFLAGS="" LDFLAGS="$(HOST_LDFLAGS)" || exit 1;)
-	$(MAKE) -C $(PKG_BUILD_DIR) DESTDIR="$(PKG_INSTALL_DIR)" DOCSRC="" install
+		$(MAKE) -C $(PKG_BUILD_DIR)/$(dir) \
+			CC="$(HOSTCC)" \
+			CFLAGS="$(HOST_CFLAGS)" \
+			CPPFLAGS="" \
+			LDFLAGS="$(HOST_LDFLAGS)"\
+		|| exit 1; \
+	) ; \
+	echo "#define FC_ARCHITECTURE \"$(TARGET_ARCH)\"" >> $(PKG_BUILD_DIR)/config.h
+	$(MAKE) -C $(PKG_BUILD_DIR) \
+		DESTDIR="$(PKG_INSTALL_DIR)" \
+		DOCSRC="" \
+		install
 endef
 
 define Build/InstallDev

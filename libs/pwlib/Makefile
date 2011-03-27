@@ -72,7 +72,7 @@ CONFIGURE_ARGS += \
 	--disable-v4l \
 	--disable-v4l2 \
 	--disable-bsdvideo \
-	--disable-video \
+	--enable-video \
 	--disable-vxml \
 	--disable-wavfile \
 	--disable-xmlrpc \
@@ -80,7 +80,9 @@ CONFIGURE_ARGS += \
 CONFIGURE_VARS += \
 	STDCXXFLAGS="$(TARGET_CFLAGS) -fno-builtin" \
 
-MAKE_FLAGS += optnoshared
+	LD="$(TARGET_LD)" \
+
+#MAKE_FLAGS += optnoshared
 
 define Build/InstallDev
 	ln -sf $(PKG_NAME)-$(PKG_VERSION) $(BUILD_DIR)/$(PKG_NAME)

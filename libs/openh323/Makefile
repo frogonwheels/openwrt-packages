@@ -38,8 +38,7 @@ CONFIGURE_VARS += \
 
 MAKE_FLAGS += \
 	CFLAGS="$(TARGET_CFLAGS) $(FPIC)" \
-	CCFLAGS="$(TARGET_CFLAGS) $(FPIC)" \
-	optnoshared
+	CCFLAGS="$(TARGET_CFLAGS) $(FPIC)"
 
 define Build/InstallDev
 	ln -sf $(PKG_NAME)-$(PKG_VERSION) $(BUILD_DIR)/$(PKG_NAME)

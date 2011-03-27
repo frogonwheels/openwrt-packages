@@ -67,6 +67,7 @@ $(foreach a,$(COREUTILS_APPLETS),$(eval $(call GenPlugin,coreutils-$(a),$(a))))
 CONFIGURE_VARS += \
 	gl_cv_func_mbrtowc_incomplete_state=yes \
 	gl_cv_func_mbrtowc_retval=yes \
+	gl_cv_func_mbrtowc_null_arg=yes \
 	gl_cv_func_wcrtomb_retval=yes
 
 ifneq ($(CONFIG_USE_UCLIBC),)

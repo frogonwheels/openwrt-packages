@@ -15,6 +15,8 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://www.xmailserver.org/
 PKG_MD5SUM:=26d35c2fc104d79ebb6397c7dece5b15
 
+TARGET_CFLAGS += $(FPIC)
+
 include $(INCLUDE_DIR)/package.mk
 
 define Package/xmail
@@ -31,13 +33,15 @@ define Package/xmail/description
  multiple domains, virtual users and spam protection.
 endef
 
+#
+
 define Build/Compile
 	CFLAGS="$(TARGET_CFLAGS)" \
 	$(MAKE) -C $(PKG_BUILD_DIR) -f Makefile.lnx \
 		$(TARGET_CONFIGURE_OPTS) \
 		LD="\$$$$(CC)" \
 		CPPFLAGS="$(TARGET_CPPFLAGS) -I$(STAGING_DIR)/usr/include/uClibc++ -fno-builtin -fno-rtti -nostdinc++" \
-		LDFLAGS="$(TARGET_LDFLAGS) -nodefaultlibs -lcrypto -lssl -luClibc++ -ldl -lm -lpthread $(LIBGCC_S)" \
+		LDFLAGS="$(TARGET_LDFLAGS) -lcrypto -lssl -nodefaultlibs -luClibc++ -ldl -lm -lpthread $(LIBGCC_S) -lc" \
 		all
 	tar -cjf $(PKG_BUILD_DIR)/MailRoot.tar.bz2 -C $(PKG_BUILD_DIR)/MailRoot --exclude bin .
 endef

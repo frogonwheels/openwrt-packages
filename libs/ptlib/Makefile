@@ -36,6 +36,7 @@ define Package/ptlib/description
 endef
 
 TARGET_CFLAGS += $(FPIC)
+TARGET_LD:=$(TARGET_CC)
 
 CONFIGURE_ARGS += \
 	--enable-minsize \
@@ -76,13 +77,18 @@ CONFIGURE_ARGS += \
 	--disable-v4l \
 	--disable-v4l2 \
 	--disable-bsdvideo \
-	--disable-video \
+	--enable-video \
 	--disable-vxml \
 	--enable-wavfile \
 	--disable-xmlrpc \
 
 CONFIGURE_VARS += \
 	CXXFLAGS="$(TARGET_CFLAGS) -fno-builtin -fno-rtti" \
+	OPTCFLAGS="$(FPIC)"
+	OPTCCFLAGS="$(FPIC)"
+	REGCFLAGS="$(FPIC)"
+	LD="$(TARGET_CC)" \
+	
 
 CONFIGURE_CMD = ./configure
 
@@ -100,6 +106,18 @@ define Build/Configure/Default
 endef
 
 MAKE_FLAGS += optnoshared
+
+define Build/Compile
+	$(MAKE) -C $(PKG_BUILD_DIR) \
+		LD=$(TARGET_CC) \
+		OPTCFLAGS="$(TARGET_CFLAGS)" \
+		REGCFLAGS="$(TARGET_CFLAGS)" \
+		OPTCCFLAGS="$(FPIC)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		CXXFLAGS="$(TARGET_CFLAGS)" \
+		DESTDIR="$(PKG_INSTALL_DIR)"\
+		optnoshared all
+endef
 
 define Build/InstallDev
 	ln -sf $(PKG_NAME)_$(PKG_VERSION) $(BUILD_DIR)/$(PKG_NAME)
