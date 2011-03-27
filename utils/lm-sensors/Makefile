@@ -107,6 +107,13 @@ define Package/libsensors/install
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/lib/libsensors.so* $(1)/usr/lib
 endef
 
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/include/sensors
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_BUILD_DIR)/lib/sensors.h \
+		$(1)/usr/include/sensors
+	$(CP) $(PKG_BUILD_DIR)/lib/libsensors.{a,so*} $(1)/usr/lib/
+endef
 $(eval $(call BuildPackage,lm-sensors))
 $(eval $(call BuildPackage,lm-sensors-detect))
 $(eval $(call BuildPackage,libsensors))
