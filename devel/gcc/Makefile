@@ -82,9 +82,9 @@ endef
 define Package/gcc/install
 	$(INSTALL_DIR) $(1)/usr/lib/
 	cp -r $(PKG_INSTALL_DIR)/* $(1)
-	cp -r $(TOOLCHAIN_DIR)/include $(1)/usr/
-	cp $(TOOLCHAIN_DIR)/lib/crt* $(1)/usr/lib/
-	cp $(TOOLCHAIN_DIR)/lib/libc.so $(1)/usr/lib/
+	cp -r $(TOOLCHAIN_DIR)/usr/include $(1)/usr/
+	cp $(TOOLCHAIN_DIR)/usr/lib/crt* $(1)/usr/lib/
+	cp $(TOOLCHAIN_DIR)/usr/lib/libc.so $(1)/usr/lib/
 endef
 
 $(eval $(call BuildPackage,gcc))
