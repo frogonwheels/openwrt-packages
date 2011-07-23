@@ -49,7 +49,8 @@ TARGET_CFLAGS += $(FPIC) -I$(STAGING_DIR)/usr/include -L$(STAGING_DIR)/usr/lib
 CONFIGURE_ARGS += \
 	--disable-nls \
 	--without-tcl \
-	--without-gpm-support
+	--without-gpm-support \
+	--prefix=$(PKG_INSTALL_DIR)
 
 define Package/libnewt/install
 	$(INSTALL_DIR) $(1)/usr/lib
