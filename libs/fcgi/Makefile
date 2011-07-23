@@ -52,10 +52,17 @@ CONFIGURE_ARGS += \
 	--enable-shared \
 	--enable-static \
 
+ifeq ($(CONFIG_USE_UCLIBC),) 
+CONFIGURE_VARS += \
+	CPPFLAGS="$$$$CPPFLAGS" \
+	CXXFLAGS="$$$$CXXFLAGS"  \
+	LIBS="-lm"
+else
 CONFIGURE_VARS += \
 	CPPFLAGS="$$$$CPPFLAGS -I$(STAGING_DIR)/usr/include/uClibc++" \
 	CXXFLAGS="$$$$CXXFLAGS -fno-builtin -fno-rtti -nostdinc++"  \
-	LIBS="-nodefaultlibs -luClibc++ -lm" \
+	LIBS="-nodefaultlibs -luClibc++ -lm"
+endif
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include
