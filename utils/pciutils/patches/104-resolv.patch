@@ -9,3 +9,15 @@
  
  case $sys in
  	linux*)
+--- a/lib/names-net.c
++++ b/lib/names-net.c
+@@ -194,7 +194,9 @@ char
+       resolver_inited = 1;
+       res_init();
+     }
++#ifdef __UCLIBC__
+   res = res_query(dnsname, ns_c_in, ns_t_txt, answer, sizeof(answer));
++#endif
+   if (res < 0)
+     {
+       a->debug("\tfailed, h_errno=%d\n", h_errno);
