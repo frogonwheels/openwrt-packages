@@ -173,7 +173,7 @@ else
 endif
 
 ifneq ($(SDK)$(CONFIG_PACKAGE_php5-apache),)
-  CONFIGURE_ARGS+= --with-apxs2=$(STAGING_DIR)/usr/sbin/apxs \
+  CONFIGURE_ARGS+= --with-apxs2=$(STAGING_DIR)/usr/sbin/apxs
 endif
 
 ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-apc),)
@@ -440,7 +440,7 @@ else
   CONFIGURE_ARGS+= --disable-filter
 endif
 
-ifneq ($(CONFIG_PACKAGE_php5-apache),)
+ifneq ($(SDK)$(CONFIG_PACKAGE_php5-apache),)
   PKG_BUILD_DEPENDS+= apache-server
   PKG_CONFIGURE_LIBS+= -lpthread
 endif
